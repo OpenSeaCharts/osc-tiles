@@ -1,0 +1,7 @@
+services:
+  tile-server:
+    container_name: martin-tile-server
+    image: ghcr.io/maplibre/martin
+    ports: [ 127.0.0.1:3000:3000 ]
+    volumes: [ "./tilemaker:/files" ]
+    command: [ "/files" ]

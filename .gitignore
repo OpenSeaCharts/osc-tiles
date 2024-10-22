@@ -1,3 +1,9 @@
+# General
+openmaptiles/
+*.mbtiles
+*.osm.pbf
+tilemaker/tilemaker
+
 # JetBrains
 *.iml
-.idea
+.idea/
