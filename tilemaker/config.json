@@ -193,6 +193,10 @@
       "minzoom": 8,
       "maxzoom": 14
     },
+    "pipeline_area": {
+      "minzoom": 8,
+      "maxzoom": 14
+    },
     "pontoon": {
       "minzoom": 8,
       "maxzoom": 14
@@ -305,7 +309,27 @@
       "minzoom": 8,
       "maxzoom": 14
     },
-    "separation": {
+    "separation_boundary": {
+      "minzoom": 8,
+      "maxzoom": 14
+    },
+    "separation_crossing": {
+      "minzoom": 8,
+      "maxzoom": 14
+    },
+    "separation_lane": {
+      "minzoom": 8,
+      "maxzoom": 14
+    },
+    "separation_line": {
+      "minzoom": 8,
+      "maxzoom": 14
+    },
+    "separation_roundabout": {
+      "minzoom": 8,
+      "maxzoom": 14
+    },
+    "separation_zone": {
       "minzoom": 8,
       "maxzoom": 14
     },
