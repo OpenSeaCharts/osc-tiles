@@ -364,9 +364,21 @@ function node_function()
             Attribute("channel", Find("seamark:signal_station_warning:channel"))
         end,
         small_craft_facility = function()
-            Layer("small_craft_facility", false)
-            Attribute("category", Find("seamark:small_craft_facility:category"))
-            -- TODO add offset
+            local categories = split(Find("seamark:small_craft_facility:category"), ";")
+            local length = #categories
+            local isEven = length % 2 == 0
+            for i = 0, length - 1 do
+                Layer("small_craft_facility", false)
+                -- starts with index 1
+                Attribute("category", categories[i + 1])
+                if (isEven) then
+                    AttributeNumeric("offset_x", i)
+                    AttributeNumeric("offset_y", 0)
+                else
+                    AttributeNumeric("offset_x", i - 0.5)
+                    AttributeNumeric("offset_y", 0)
+                end
+            end
         end,
         spring = function()
             Layer("spring", false)
@@ -756,4 +768,12 @@ function relation_scan_function()
 end
 
 function attribute_function(attr, layer)
+end
+
+function split(string, delimiter)
+    local fields = {}
+    for field in string:gmatch('([^' .. delimiter .. ']+)') do
+        fields[#fields + 1] = field
+    end
+    return fields
 end
