@@ -141,6 +141,14 @@
       "minzoom": 8,
       "maxzoom": 13
     },
+    "light_float": {
+      "minzoom": 8,
+      "maxzoom": 13
+    },
+    "light_vessel": {
+      "minzoom": 8,
+      "maxzoom": 13
+    },
     "lock_basin": {
       "minzoom": 8,
       "maxzoom": 13
