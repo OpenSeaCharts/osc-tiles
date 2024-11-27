@@ -1,0 +1,15 @@
+name: "Update Tiles"
+on:
+  workflow_dispatch:
+
+jobs:
+  update-osm:
+    name: "Update .osm.pbf extract"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: osm
+    steps:
+      - uses: actions/checkout@v4
+      - run: apt update && apt install -y osmctools
+      - run: ./update.sh

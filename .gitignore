@@ -1,9 +1,13 @@
+# JetBrains
+*.iml
+.idea/
+
 # General
 openmaptiles/
 *.mbtiles
 *.osm.pbf
+*.o5m
+*.osm.bz2
 tilemaker/tilemaker
-
-# JetBrains
-*.iml
-.idea/
+changesets-bz2-rss.xml
+**/osmupdate_temp/
