@@ -5,9 +5,12 @@
 # General
 openmaptiles/
 *.mbtiles
+*.pmtiles
 *.osm.pbf
 *.o5m
 *.osm.bz2
+*.tar.gz
+**/pmtiles
 tilemaker/tilemaker
 changesets-bz2-rss.xml
 **/osmupdate_temp/

@@ -4,12 +4,46 @@ on:
 
 jobs:
   update-osm:
-    name: "Update .osm.pbf extract"
+    name: "Update Tiles"
+    permissions: write-all
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: osm
     steps:
-      - uses: actions/checkout@v4
-      - run: apt update && apt install -y osmctools
-      - run: ./update.sh
+      - name: "Checkout Branch"
+        uses: actions/checkout@v4
+      - name: "Install Tools"
+        run: |
+          sudo apt-get update && sudo apt-get install -y osmctools && \
+          wget -q https://github.com/systemed/tilemaker/releases/latest/download/tilemaker-ubuntu-22.04.zip -O tilemaker.zip && \
+          unzip -p tilemaker.zip build/tilemaker >tilemaker/tilemaker && \
+          chmod +x tilemaker/tilemaker && \
+          wget -q https://github.com/protomaps/go-pmtiles/releases/download/v1.22.1/go-pmtiles_1.22.1_Linux_x86_64.tar.gz -O pmtiles.tar.gz
+          tar -zxf pmtiles.tar.gz pmtiles
+          mv ./pmtiles tilemaker/
+      - name: "Download latest seamarks.osm.pbf"
+        working-directory: osm
+        run: wget -q https://pub-d2551c5d39b9474c8938b01fbba8c6ba.r2.dev/seamarks.osm.pbf -O seamarks-old.osm.pbf
+      - name: "Update OSM Data"
+        working-directory: osm
+        run: ./update.sh
+      - name: "Move to Tilemaker"
+        run: mv osm/seamarks.osm.pbf tilemaker/
+      - name: "Generate MBTiles"
+        working-directory: tilemaker
+        run: ./run.sh
+      - name: "Generate PMTiles"
+        working-directory: tilemaker
+        run: ./pmtiles convert seamarks.mbtiles seamarks.pmtiles
+      - name: "Prepare for R2 Upload"
+        run: |
+          mv tilemaker/seamarks.osm.pbf ./output && \
+          mv tilemaker/seamarks.mbtiles ./output && \
+          mv tilemaker/seamarks.pmtiles ./output
+      - name: "Upload to R2"
+        uses: ryand56/r2-upload-action@v1
+        with:
+          r2-account-id: ${{ secrets.R2_ACCOUNT_ID }}
+          r2-access-key-id: ${{ secrets.R2_ACCESS_KEY_ID }}
+          r2-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          r2-bucket: ${{ vars.R2_BUCKET }}
+          source-dir: output
+          destination-dir: ./
