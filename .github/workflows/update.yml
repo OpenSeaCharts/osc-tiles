@@ -35,9 +35,10 @@ jobs:
         run: ./pmtiles convert seamarks.mbtiles seamarks.pmtiles
       - name: "Prepare for R2 Upload"
         run: |
-          mv tilemaker/seamarks.osm.pbf ./output && \
-          mv tilemaker/seamarks.mbtiles ./output && \
-          mv tilemaker/seamarks.pmtiles ./output
+          mkdir ./output
+          mv tilemaker/seamarks.osm.pbf ./output/ && \
+          mv tilemaker/seamarks.mbtiles ./output/ && \
+          mv tilemaker/seamarks.pmtiles ./output/
       - name: "Upload to R2"
         uses: ryand56/r2-upload-action@v1
         with:
