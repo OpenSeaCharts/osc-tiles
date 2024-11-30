@@ -1,390 +1,104 @@
 {
   "layers": {
-    "seamarks": {},
-    "anchorage": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "anchor_berth": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "beacon": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "berth": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "bridge": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "bunker_station": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "building": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "buoy": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "cable_area": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "cable": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "causeway": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "checkpoint": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "coastguard_station": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "communication_area": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "crane": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "control_point": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "daymark": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "distance_mark": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "dredged_area": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "dumping_ground": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "exceptional_structure": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "fairway": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "ferry_route": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "wall": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "fog_signal": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "fortified_structure": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "fishing_facility": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "gate": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "gridiron": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "harbour_basin": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "harbour": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "hulk": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "inshore_traffic_zone": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "landmark": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "light": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "light_float": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "light_vessel": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "lock_basin": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "marine_farm": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "military_area": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "mooring": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "navigation_line": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "notice": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "obstruction": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "oil_barrier": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "platform": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "production_area": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "pilot_boarding": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "pile": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "pipeline": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "pipeline_area": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "pontoon": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "precautionary_area": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "pylon": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "radar_line": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "radar_range": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "radar_reflector": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "radar_transponder": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "radar_station": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "calling-in_point": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "radio_station": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "recommended_route_centreline": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "recommended_track": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "recommended_traffic_lane": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "rescue_station": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "restricted_area": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "retro_reflector": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "sand_waves": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "seabed_area": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "sea_area": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "seagrass": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "seaplane_landing_area": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "tank": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "shoreline_construction": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "signal_station": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "small_craft_facility": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "spring": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "submarine_transit_lane": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "topmark": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "separation_boundary": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "separation_crossing": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "separation_lane": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "separation_line": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "separation_roundabout": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "separation_zone": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "turning_basin": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "two-way_route": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "rock": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "vegetation": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "virtual_aton": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "vehicle_transfer": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "water_turbulence": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "waterway_gauge": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "weed": {
-      "minzoom": 8,
-      "maxzoom": 13
-    },
-    "wreck": {
-      "minzoom": 8,
-      "maxzoom": 13
-    }
+    "anchorage": {},
+    "anchor_berth": {},
+    "beacon": {},
+    "berth": {},
+    "bridge": {},
+    "bunker_station": {},
+    "building": {},
+    "buoy": {},
+    "cable_area": {},
+    "cable": {},
+    "causeway": {},
+    "checkpoint": {},
+    "coastguard_station": {},
+    "communication_area": {},
+    "crane": {},
+    "control_point": {},
+    "daymark": {},
+    "distance_mark": {},
+    "dredged_area": {},
+    "dumping_ground": {},
+    "exceptional_structure": {},
+    "fairway": {},
+    "ferry_route": {},
+    "wall": {},
+    "fog_signal": {},
+    "fortified_structure": {},
+    "fishing_facility": {},
+    "gate": {},
+    "gridiron": {},
+    "harbour_basin": {},
+    "harbour": {},
+    "hulk": {},
+    "inshore_traffic_zone": {},
+    "landmark": {},
+    "light": {},
+    "light_float": {},
+    "light_vessel": {},
+    "lock_basin": {},
+    "marine_farm": {},
+    "military_area": {},
+    "mooring": {},
+    "navigation_line": {},
+    "notice": {},
+    "obstruction": {},
+    "oil_barrier": {},
+    "platform": {},
+    "production_area": {},
+    "pilot_boarding": {},
+    "pile": {},
+    "pipeline": {},
+    "pipeline_area": {},
+    "pontoon": {},
+    "precautionary_area": {},
+    "pylon": {},
+    "radar_line": {},
+    "radar_range": {},
+    "radar_reflector": {},
+    "radar_transponder": {},
+    "radar_station": {},
+    "calling-in_point": {},
+    "radio_station": {},
+    "recommended_route_centreline": {},
+    "recommended_track": {},
+    "recommended_traffic_lane": {},
+    "rescue_station": {},
+    "restricted_area": {},
+    "retro_reflector": {},
+    "sand_waves": {},
+    "seabed_area": {},
+    "sea_area": {},
+    "seagrass": {},
+    "seaplane_landing_area": {},
+    "tank": {},
+    "shoreline_construction": {},
+    "signal_station": {},
+    "small_craft_facility": {},
+    "spring": {},
+    "submarine_transit_lane": {},
+    "topmark": {},
+    "separation_boundary": {},
+    "separation_crossing": {},
+    "separation_lane": {},
+    "separation_line": {},
+    "separation_roundabout": {},
+    "separation_zone": {},
+    "turning_basin": {},
+    "two-way_route": {},
+    "rock": {},
+    "vegetation": {},
+    "virtual_aton": {},
+    "vehicle_transfer": {},
+    "water_turbulence": {},
+    "waterway_gauge": {},
+    "weed": {},
+    "wreck": {}
   },
   "settings": {
     "minzoom": 8,
-    "maxzoom": 13,
+    "maxzoom": 12,
     "basezoom": 13,
     "include_ids": false,
     "combine_below": 0,
@@ -402,8 +116,10 @@
       ]
     },
     "metadata": {
-      "author": "OpenStreetMap contributors, OpenSeaCharts",
-      "license": "Open Database License 1.0"
+      "author": "OpenSeaCharts",
+      "license": "Open Database License 1.0",
+      "attribution": "OpenSeaCharts © <a href=\"https://www.openstreetmap.org/copyright\",>OpenStreetMap</a>",
+      "version": "0.1"
     }
   }
 }
