@@ -15,7 +15,7 @@ jobs:
           unzip -p tilemaker.zip build/tilemaker >tilemaker/tilemaker && \
           chmod +x tilemaker/tilemaker
       - name: "Download latest seamarks.osm.pbf"
-        working-directory: tilemaker
+        working-directory: osm
         run: wget -q https://pub-d2551c5d39b9474c8938b01fbba8c6ba.r2.dev/seamarks.osm.pbf -O seamarks.osm.pbf
       - name: "Generate MBTiles"
         working-directory: tilemaker
