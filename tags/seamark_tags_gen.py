@@ -32,6 +32,10 @@ def aggregate_tags(input_file, output_file):
                 key = match.group(1)
                 val = match.group(2)
                 
+                # Filter out only whitespace or empty values
+                if not val or val.isspace():
+                    continue
+                
                 counts[key] += 1
                 
                 if key != "seamark:type":
@@ -57,8 +61,12 @@ def aggregate_tags(input_file, output_file):
         
         sorted_vals = sorted(values[k].keys())
         
+        # Heuristic: If unique values count is small (< 100), it's likely an enum -> show all
+        # If it's large, it's likely free text -> show first 20
+        is_enum = len(sorted_vals) < 100
+        
         for v in sorted_vals:
-            if k == "seamark:type" or shown < 20:
+            if k == "seamark:type" or is_enum or shown < 20:
                 vals_list.append(v)
             else:
                 vals_list.append("...")

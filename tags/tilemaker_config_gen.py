@@ -1,96 +1,63 @@
-import csv
 import re
 import json
 import sys
 import os
 
-def generate_config(csv_file, config_file, lua_file):
-    print(f"Analyzing {csv_file}...")
+def generate_config_from_schema(schema_file, config_file, lua_file):
+    print(f"Reading schema from {schema_file}...")
     
     seamark_types = set()
     type_attributes = {}
+    
+    current_type = None
+    stack = [] # List of (indent_level, name)
 
-    # 1. Read seamark types
     try:
-        with open(csv_file, 'r', encoding='utf-8') as f:
-            reader = csv.reader(f)
-            for row in reader:
-                if not row: continue
-                key = row[1]
-                if key == 'seamark:type':
-                    for val in row[2:]:
-                        if val and val != '...':
-                            # Fix common issues: capitalization and spaces
-                            val = val.lower().replace(' ', '_')
-
-                            # Validation logic
-                            # 1. Must not contain invalid chars
-                            if any(c in val for c in [':', '=', ';', ',']):
-                                continue
+        with open(schema_file, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.rstrip()
+                if not line: continue
+                
+                # Detect indentation (2 spaces per level)
+                indent = len(line) - len(line.lstrip())
+                content = line.strip()
+                
+                # Match item: - **name**...
+                match = re.match(r'- \*\*(.+?)\*\*', content)
+                if match:
+                    name = match.group(1)
+                    
+                    # Manage stack
+                    while stack and stack[-1][0] >= indent:
+                        stack.pop()
+                    stack.append((indent, name))
+                    
+                    if len(stack) == 1:
+                        # Top level: Seamark Type
+                        current_type = name
+                        seamark_types.add(current_type)
+                        type_attributes[current_type] = set()
+                    else:
+                        # Attribute
+                        if current_type:
+                            # Construct attribute path relative to type
+                            # stack[0] is type. stack[1:] are attributes.
+                            attr_parts = [x[1] for x in stack[1:]]
+                            attr_name = ":".join(attr_parts)
+                            type_attributes[current_type].add(attr_name)
                             
-                            # 3. Whitelist of allowed types/prefixes
-                            # Based on OpenSeaMap data model
-                            allowed_prefixes = [
-                                'buoy', 'beacon', 'light', 'landmark', 'notice', 'gate', 'lock', 'bridge', 
-                                'cable', 'pipeline', 'obstruction', 'wreck', 'rock', 'pilot', 'signal', 
-                                'small_craft', 'harbour', 'mooring', 'ferry', 
-                                'navigation', 'rescue', 'coastguard', 'marine', 'production', 'sea', 
-                                'distance', 'recommended', 'radar', 'radio', 'separation', 'dredged', 
-                                'dumping', 'military', 'restricted', 'precautionary', 'submarine', 
-                                'water', 'weed', 'sand', 'vegetation', 'vehicle', 'tank', 'platform', 
-                                'pylon', 'gridiron', 'hulk', 'fishing', 'fortified', 'exceptional', 
-                                'fairway', 'causeway', 'checkpoint', 'anchor', 'turning', 'shoreline', 
-                                'seaplane', 'seabed', 'retro', 'leading', 'protected', 'bunker', 
-                                'boat', 'waterway', 'pile', 'pole', 'dry', 'floating', 'fog', 'top'
-                            ]
-                            
-                            allowed_exact = [
-                                'anchorage', 'berth', 'mooring', 'harbour', 'lock', 'gate', 'bridge', 
-                                'obstruction', 'wreck', 'rock', 'landmark', 'platform', 'pylon', 'tank', 
-                                'hulk', 'gridiron', 'fairway', 'causeway', 'checkpoint', 'weed', 
-                                'seagrass', 'sand_waves', 'spring', 'water_turbulence', 'turning_basin', 
-                                'dry_dock', 'pile', 'pole', 'waterway_gauge', 'boat_hoist', 'bunker_station',
-                                'sunken_ship', 'hazard', 'conveyor', 'sea', 'notice'
-                            ]
-
-                            is_allowed = False
-                            if val in allowed_exact:
-                                is_allowed = True
-                            else:
-                                for p in allowed_prefixes:
-                                    if val.startswith(p + '_') or val == p:
-                                        is_allowed = True
-                                        break
-                            
-                            if not is_allowed:
-                                continue
-
-                            seamark_types.add(val)
-                    break
     except FileNotFoundError:
-        print(f"Error: {csv_file} not found.")
+        print(f"Error: {schema_file} not found.")
         return
 
-    # 2. Read attributes
-    with open(csv_file, 'r', encoding='utf-8') as f:
-        reader = csv.reader(f)
-        for row in reader:
-            if not row: continue
-            key = row[1]
-            match = re.match(r'seamark:([^:]+):(.+)', key)
-            if match:
-                t = match.group(1)
-                attr = match.group(2)
-                if t in seamark_types:
-                    if t not in type_attributes:
-                        type_attributes[t] = set()
-                    type_attributes[t].add(attr)
+    print(f"Found {len(seamark_types)} seamark types.")
 
-    # 3. Group types
+    # Group types
     groups = {}
     for t in seamark_types:
         if '_' in t:
             prefix = t.split('_')[0]
+            # Common prefixes that should be grouped
             if prefix in ['buoy', 'beacon', 'light', 'bridge', 'gate', 'lock', 'mooring', 'pipeline', 'cable', 'separation', 'signal', 'radio', 'rescue', 'radar', 'coastguard', 'marine', 'production', 'sea', 'obstruction', 'wreck', 'rock', 'landmark', 'notice', 'distance', 'small', 'ferry', 'navigation', 'recommended', 'pilot']:
                  group = prefix
             else:
@@ -106,7 +73,7 @@ def generate_config(csv_file, config_file, lua_file):
             groups[group] = []
         groups[group].append(t)
 
-    # 4. Generate config.json snippet
+    # Generate config.json snippet
     new_layers = {}
     for g in groups:
         new_layers[g] = {"minzoom": 8, "maxzoom": 12}
@@ -114,7 +81,10 @@ def generate_config(csv_file, config_file, lua_file):
     # Update config.json
     if os.path.exists(config_file):
         with open(config_file, 'r') as f:
-            config = json.load(f)
+            try:
+                config = json.load(f)
+            except json.JSONDecodeError:
+                config = {"layers": {}}
     else:
         config = {"layers": {}}
 
@@ -130,35 +100,15 @@ def generate_config(csv_file, config_file, lua_file):
         
     config['settings']['filemetadata']['tilejson'] = "3.0.0"
 
-    # Remove layers that are no longer in the groups (cleanup)
-    # But be careful not to remove non-seamark layers if any exist.
-    # For now, we just update/add.
-    # To clean up "dolohin" etc from config, we might need to remove keys that are not in new_layers
-    # IF we assume config only contains seamark layers.
-    # Let's try to remove keys that look like seamark layers but are not in new_layers?
-    # Or just overwrite the 'layers' section if we are confident?
-    # The user said "my tile schema should have every seamark type as a layer".
-    # Let's assume we manage all layers.
-    
-    # Actually, let's just remove the specific bad ones we know about if they exist, 
-    # or better, rebuild the layers list if we want to be clean.
-    # Given the previous instructions, we are building the config from scratch-ish.
-    # Let's clear the layers that we know are seamarks but not in our new list?
-    # Or just replace config['layers'] with new_layers?
-    # That's risky if there are other layers.
-    # But the user asked to "do some clean up".
-    # Let's replace config['layers'] with new_layers.
+    # Replace layers with generated ones
     config['layers'] = new_layers
-
-    for k, v in new_layers.items():
-        config['layers'][k] = v
 
     with open(config_file, 'w') as f:
         json.dump(config, f, indent=2)
     
     print(f"Updated {config_file}")
 
-    # 5. Generate process.lua
+    # Generate process.lua
     lua_code = []
     lua_code.append('function init_function(name)')
     lua_code.append('end')
@@ -206,15 +156,50 @@ def generate_config(csv_file, config_file, lua_file):
             is_area = "false"
 
         lua_code.append(f'        ["{t}"] = function()')
-        lua_code.append(f'            Layer("{group}", {is_area})')
-        lua_code.append(f'            Attribute("type", "{t}")')
+        
+        # Split attributes into base and numbered
+        base_attrs = []
+        numbered_attrs = {} # index -> list of (suffix, full_attr)
         
         if t in type_attributes:
             for attr in sorted(list(type_attributes[t])):
-                attr_name = attr.replace(':', '_')
-                lua_code.append(f'            Attribute("{attr_name}", Find("seamark:{t}:{attr}"))')
+                parts = attr.split(':')
+                if parts[0].isdigit():
+                    idx = int(parts[0])
+                    suffix = ':'.join(parts[1:])
+                    if suffix: # Ensure not empty
+                        if idx not in numbered_attrs: numbered_attrs[idx] = []
+                        numbered_attrs[idx].append((suffix, attr))
+                else:
+                    base_attrs.append(attr)
+
+        # Base Layer
+        lua_code.append(f'            Layer("{group}", {is_area})')
+        lua_code.append(f'            Attribute("type", "{t}")')
+        
+        for attr in base_attrs:
+            attr_name = attr.replace(':', '_')
+            lua_code.append(f'            Attribute("{attr_name}", Find("seamark:{t}:{attr}"))')
                 
         lua_code.append('            Attribute("name", Find("seamark:name"))')
+
+        # Numbered Layers (e.g. seamark:light:1:...)
+        for idx in sorted(numbered_attrs.keys()):
+            attrs = numbered_attrs[idx]
+            # Condition: check if any attribute exists
+            conditions = [f'Find("seamark:{t}:{full_attr}") ~= ""' for _, full_attr in attrs]
+            
+            lua_code.append(f'            if {" or ".join(conditions)} then')
+            lua_code.append(f'                Layer("{group}", {is_area})')
+            lua_code.append(f'                Attribute("type", "{t}")')
+            
+            for suffix, full_attr in attrs:
+                attr_name = suffix.replace(':', '_')
+                lua_code.append(f'                Attribute("{attr_name}", Find("seamark:{t}:{full_attr}"))')
+            
+            lua_code.append('                Attribute("name", Find("seamark:name"))')
+            lua_code.append('            end')
+
         lua_code.append('        end,')
 
     lua_code.append('    }')
@@ -238,8 +223,8 @@ def generate_config(csv_file, config_file, lua_file):
     print(f"Updated {lua_file}")
 
 if __name__ == "__main__":
-    csv_path = sys.argv[1] if len(sys.argv) > 1 else "seamark_tags.csv"
+    schema_path = sys.argv[1] if len(sys.argv) > 1 else "seamark_hierarchy.md"
     config_path = sys.argv[2] if len(sys.argv) > 2 else "../tilemaker/config.json"
     lua_path = sys.argv[3] if len(sys.argv) > 3 else "../tilemaker/process.lua"
     
-    generate_config(csv_path, config_path, lua_path)
+    generate_config_from_schema(schema_path, config_path, lua_path)

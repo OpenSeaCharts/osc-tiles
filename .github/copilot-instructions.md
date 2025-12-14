@@ -9,14 +9,18 @@ This project generates vector tiles for OpenSeaMap seamarks using `tilemaker`.
   - `update.sh`: Updates existing `seamarks.osm.pbf` with latest changes.
   - `seamarks.osm.pbf`: The input data for tile generation.
 
-- **tags/**: Contains scripts for analyzing seamark tags and the generated CSVs.
-  - `aggregate_tags.py`: Python script to analyze `../osm/seamarks.osm.pbf` and generate `seamark_tags.csv`.
-  - `generate_tilemaker_config.py`: Python script that reads `seamark_tags.csv` and automatically updates `../tilemaker/config.json` and `../tilemaker/process.lua`.
+- **schema/**: Contains the TypeSpec schema and generators.
+  - `main.tsp`: The TypeSpec definition of the seamark schema (Source of Truth).
+  - `generate_tilemaker.js`: Generates `../tilemaker/process.lua` and `../tilemaker/config.json`.
+  - `generate_docs.js`: Generates `../SCHEMA.md`.
+  - `osm.js`: Helper for OSM tag mapping.
+
+- **tags/**: Contains scripts for analyzing seamark tags.
   - `seamark_tags.csv`: Aggregated statistics of seamark tags.
 
 - **tilemaker/**: Contains tile generation configuration and helper scripts.
-  - `config.json`: Tilemaker configuration (layers, zoom levels).
-  - `process.lua`: Lua script for processing OSM tags into vector tile layers.
+  - `config.json`: Tilemaker configuration (layers, zoom levels) - Generated.
+  - `process.lua`: Lua script for processing OSM tags into vector tile layers - Generated.
   - `run.sh`: Runs `tilemaker` to generate `seamarks.mbtiles`.
 
 ## Workflow
@@ -24,21 +28,28 @@ This project generates vector tiles for OpenSeaMap seamarks using `tilemaker`.
 1.  **Data Preparation**:
     - Run `osm/create.sh` (initial setup) or `osm/update.sh` (maintenance) to get the latest `osm/seamarks.osm.pbf`.
 
-2.  **Tag Analysis**:
-    - Run `python tags/aggregate_tags.py` to generate `tags/seamark_tags.csv`. This file lists all `seamark:*` tags and their values.
+2.  **Schema Definition**:
+    - Edit `schema/main.tsp` to define new seamark types, attributes, or modify existing ones.
+    - Use `@doc` decorators to document models and attributes.
+    - Use `geometryType` property to specify if it's a Point, Line, Polygon, etc.
 
-3.  **Configuration Update**:
-    - Run `python tags/generate_tilemaker_config.py` to update `tilemaker/config.json` and `tilemaker/process.lua`.
-    - This ensures that all seamark types found in the data are represented as layers in the vector tiles.
-    - **Zoom Levels**: Seamark layers are configured for minzoom 8 and maxzoom 12.
-    - **Filtering & Normalization**: The script filters tags using a whitelist of allowed prefixes/types and normalizes them (lowercase, spaces to underscores) to ensure clean layer names.
-    - **TileJSON**: Updates the TileJSON version to 3.0.0 in `config.json`.
+3.  **Configuration Generation**:
+    - Run `npm run build` inside the `schema/` directory.
+    - This executes:
+        - `generate_tilemaker.js`: Updates `tilemaker/config.json` and `tilemaker/process.lua`.
+        - `generate_docs.js`: Updates `SCHEMA.md`.
 
 4. **Tile Generation**:
     - Run `tilemaker/run.sh` to generate `tilemaker/seamarks.mbtiles`.
 
 ## Key Configurations
 
-- **Seamark Grouping**: Seamark types are grouped into layers (e.g., `buoy_lateral`, `buoy_cardinal` -> `buoy` layer).
-- **Attributes**: All attributes found for a seamark type in the CSV are added to the tile features.
-- **Geometry**: The `generate_tilemaker_config.py` script infers whether a feature should be a point, line, or polygon based on the seamark type name (e.g., types containing "area" are treated as polygons).
+- **TypeSpec Schema**: The `schema/main.tsp` file is the central definition. It defines:
+    - **Models**: Each seamark type (e.g., `Buoy`, `Light`) is a model.
+    - **Attributes**: Properties of the model map to vector tile attributes.
+    - **OSM Mapping**: The generator infers OSM tags (e.g., `seamark:type`, `seamark:<type>:<attribute>`).
+- **Generated Lua**: The `process.lua` script is automatically generated to:
+    - Filter OSM objects based on `seamark:type`.
+    - Extract attributes defined in the schema.
+    - Handle special cases like splitting `light` features by colour.
+    - Add a unique `id` to every feature.

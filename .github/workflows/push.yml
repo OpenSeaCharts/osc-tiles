@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout Branch"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: "Install Tools"
         run: |
           wget -q https://github.com/systemed/tilemaker/releases/latest/download/tilemaker-ubuntu-22.04.zip -O tilemaker.zip && \
