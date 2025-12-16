@@ -8,14 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout Branch"
-        uses: actions/checkout@v6
+        uses: actions/checkout@v5
       - name: "Install Tools"
         run: |
           wget -q https://github.com/systemed/tilemaker/releases/latest/download/tilemaker-ubuntu-22.04.zip -O tilemaker.zip && \
           unzip -p tilemaker.zip build/tilemaker >tilemaker/tilemaker && \
           chmod +x tilemaker/tilemaker
       - name: "Download latest seamarks.osm.pbf"
-        working-directory: osm
+        working-directory: tilemaker
         run: wget -q https://pub-d2551c5d39b9474c8938b01fbba8c6ba.r2.dev/seamarks.osm.pbf -O seamarks.osm.pbf
       - name: "Generate MBTiles"
         working-directory: tilemaker

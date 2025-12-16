@@ -14,5 +14,3 @@ openmaptiles/
 tilemaker/tilemaker
 changesets-bz2-rss.xml
 **/osmupdate_temp/
-*.csv
-/schema/node_modules
