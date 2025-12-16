@@ -64,11 +64,20 @@ sudo apt install -y osmctools
 - Do not use this to update a file that is outdated multiple weeks, create a new
   file instead.
 
+#### Analyze Tags and Generate Configuration
+
+To ensure all seamark types are correctly represented in the vector tiles, we analyze the OSM data and generate the tilemaker configuration dynamically.
+
+1.  **Aggregate Tags**: Run `python tags/aggregate_tags.py` to analyze `osm/seamarks.osm.pbf` and generate `tags/seamark_tags.csv`.
+2.  **Generate Config**: Run `python tags/generate_tilemaker_config.py` to update `tilemaker/config.json` and `tilemaker/process.lua` based on the aggregated tags. This step also normalizes tag names and filters out invalid or irrelevant seamark types.
+
 #### Vector MBTiles generation
 
 We use tilemaker to split OSM data into Mapbox Vector Tiles that get stored in
 an MBTiles archive. All necessary files are located
 in [./tilemaker](./tilemaker).
+
+You can use [./tilemaker/run.sh](./tilemaker/run.sh) to generate the tiles.
 
 Tilemaker requires the `--skip-integrity` flag to run
 successfully ([docs](https://github.com/systemed/tilemaker/blob/master/docs/RUNNING.md#output-messages)).
@@ -87,7 +96,7 @@ The tile schema is defined via tilemaker config files:
 
 ## References
 
+- [OSM Seamark Objects](https://wiki.openstreetmap.org/wiki/Seamarks/Seamark_Objects)
 - [S-57 Symbols, Singapore, 2011](https://www.mpa.gov.sg/docs/mpalibraries/default-document-library/who-we-are/about-mpa/chart-symbols-and-abbreviations/chart1_jan13.pdf?sfvrsn=a56e5e18_3)
 - [INT-1 Symbols, India, Edition 2, 2011](https://hydrobharat.gov.in/wp-content/uploads/2019/07/INP_5020_INT1.pdf)
 - [INT-1 Symbols, UK, Edition 8, 2020](https://www.hydro.navy.mi.th/standard/INT1_EN_Ed8.pdf)
-- [OSM Seamark Objects](https://wiki.openstreetmap.org/wiki/Seamarks/Seamark_Objects)
